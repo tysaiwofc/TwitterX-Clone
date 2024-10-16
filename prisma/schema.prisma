@@ -1,0 +1,103 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+
+model cl_users {
+  id                 Int      @id @default(autoincrement())
+  username           String?  @db.Text
+  fname              String?  @db.Text
+  lname              String?  @db.Text
+  about              String?  @db.Text
+  gender             String?  @db.Text
+  email              String?  @unique @db.VarChar(255)
+  phone              String?  @db.Text
+  password           String?  @db.Text
+  joined             Int?
+  ip_address         String?  @db.Text
+  language           String?  @db.Text
+  avatar             String?  @db.Text
+  cover             String?  @db.Text
+  verified           Int?
+  admin              Int?
+  posts              Int?
+  followers          Int?
+  following          Int?
+  website            String?  @db.Text
+  country_id         Int?
+  city               String?  @db.Text
+  last_post          BigInt?
+  profile_privacy    String?  @db.Text
+  follow_privacy     String?  @db.Text
+  contact_privacy    String?  @db.Text
+  wallet             Int?
+  refresh_token      String?  @db.Text
+  settings           String?  @db.Text
+  display_settings    String?  @db.Text
+  is_premium         Int?
+  premium_settings   String?  @db.Text
+  premium_ex_date    BigInt?
+  web_device_id      String?  @db.Text
+  cont_monetization  String?  @db.Text
+  subscription_price String?  @db.Text
+  is_online          String?  @db.Text
+  createdAt DateTime @default(now())
+
+  postFeed      Posts[]     @relation("UserPosts")
+  accounts   Account[]   @relation("UserAccounts")
+  sessions   Session[]   @relation("UserSessions")
+}
+
+model Posts {
+  id                 Int      @id @default(autoincrement())
+  type               String   @db.Text
+  userId             Int
+  likes              Int
+  reposts            Int
+  replys             Int
+  reference          Int
+  views              Int
+  content            String?   @db.Text
+  images             String?   @db.Text
+  video              String?   @db.Text
+  createdAt DateTime @default(now())
+
+  user cl_users   @relation("UserPosts", fields: [userId], references: [id])
+
+}
+
+model Account {
+  id                Int      @id @default(autoincrement())
+  userId            Int
+  providerType      String
+  provider          String
+  providerAccountId String
+
+  user cl_users @relation("UserAccounts", fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id            Int      @id @default(autoincrement())
+  sessionToken  String   @unique
+  userId        Int
+  expires       DateTime
+
+  user cl_users @relation("UserSessions", fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+}

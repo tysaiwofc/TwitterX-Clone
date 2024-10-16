@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: #ededed;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* styles.css ou styles.module.css */
+.hidden {
+  display: none;
+}
+
+.right-sidebar {
+  transition: opacity 0.3s ease;
+}
+
+.left-sidebar {
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-items {
+  max-width: 288px;
+  transition: opacity 0.3s ease;
+} 
+
+/* Adicione esta media query para ocultar a sidebar em telas pequenas */
+@media (max-width: 768px) {
+  .right-sidebar {
+    display: none;
+  }
+
+  .left-sidebar {
+    display: none;
+  }
+
+  .sidebar-items {
+    max-width: 80px;
+  }
+}
+
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
