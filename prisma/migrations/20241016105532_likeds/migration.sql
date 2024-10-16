@@ -1,0 +1,2 @@
+-- AddForeignKey
+ALTER TABLE `Likeds` ADD CONSTRAINT `Likeds_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Posts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

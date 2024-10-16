@@ -4,7 +4,68 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Certifique-se de ter sua configuração de NextAuth aqui
 import prisma from '@/lib/prisma'; // Prisma client
 
-// Função para lidar com requisições GET
+async function incrementField(postId: number, field: string, has: boolean) {
+  const operation = has ? 'decrement' : 'increment';
+  const adjustment = has ? -1 : 1;
+
+  try {
+    await prisma.posts.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        [field]: {
+          [operation]: 1, // Usa 1 para incrementar ou decrementar, pode ser ajustado
+        },
+      },
+    });
+    console.log(`Successfully ${operation === 'decrement' ? 'decremented' : 'incremented'} ${field} by ${Math.abs(adjustment)} for post with id: ${postId}`);
+  } catch (error) {
+    console.error(`Failed to ${operation} ${field} for post with id: ${postId}. Error:`, error);
+    throw error; // Re-throw para que o erro possa ser tratado no chamador, se necessário.
+  }
+}
+
+export async function PATCH(req: Request) {
+  const body = await req.json();
+  const { postId, field, userId } = body;
+
+  if (!postId || !field) {
+    return NextResponse.json({ error: 'postId e field são obrigatórios' }, { status: 400 });
+  }
+
+  const likeExists = await prisma.likeds.findFirst({
+    where: {
+      postId: Number(postId),
+      userId: Number(userId),
+    },
+  });
+  
+  try {
+    await incrementField(Number(postId), field, likeExists ? true : false);
+    const uniqueType = likeExists ? true : false
+    console.log('API RESPONSE', uniqueType)
+
+    if(!likeExists) {
+      await prisma.likeds.create({
+        data: {
+          postId,
+          userId: Number(userId)
+        }
+      })
+    } else {
+      await prisma.likeds.delete({
+        where: {id: likeExists.id }
+      })
+    }
+
+    return NextResponse.json({ message: `Campo ${field} incrementado com sucesso.`, type: uniqueType }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao incrementar o campo:', error);
+    return NextResponse.json({ error: 'Falha ao incrementar campo' }, { status: 500 });
+  }
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get('page') || '1');

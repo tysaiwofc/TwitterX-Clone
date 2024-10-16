@@ -47,7 +47,9 @@ const FeedAllPostLoading = () => {
       } else {
         setPosts(prevPosts => [...prevPosts, ...data]);
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000)
     } catch (err) {
       setLoading(false);
     }
@@ -99,7 +101,7 @@ const FeedAllPostLoading = () => {
 
       {hasMore && (
         <button
-          className="mt-4 p-2 bg-[#2c2c2cce] hover:bg-[#1d1d1dce] text-[#747373]"
+          className="p-2 bg-black hover:bg-[#1d1d1dce] text-[#747373]"
           onClick={loadMorePosts}
           disabled={loading}
         >

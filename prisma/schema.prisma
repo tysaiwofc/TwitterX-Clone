@@ -54,6 +54,7 @@ model cl_users {
   postFeed      Posts[]     @relation("UserPosts")
   accounts   Account[]   @relation("UserAccounts")
   sessions   Session[]   @relation("UserSessions")
+  Likeds     Likeds[]     @relation("UserLikedPosts")
 }
 
 model Posts {
@@ -70,7 +71,18 @@ model Posts {
   video              String?   @db.Text
   createdAt DateTime @default(now())
 
+  postLikeds Likeds[]  @relation("PostLiked")
   user cl_users   @relation("UserPosts", fields: [userId], references: [id])
+
+}
+
+model Likeds {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  postId             Int
+  createdAt DateTime @default(now())
+  post               Posts    @relation("PostLiked", fields: [postId], references: [id])
+  user cl_users   @relation("UserLikedPosts", fields: [userId], references: [id])
 
 }
 

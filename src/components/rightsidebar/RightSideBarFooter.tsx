@@ -22,7 +22,7 @@ const RightSideBarFooter = () => {
             <RightSideBarFooterItem name="Accessibility" href="/accessibility" />
             <RightSideBarFooterItem name="Ads info" href="/ads-info" />
             <RightSideBarFooterItem name="More ..." href="/" />
-            <span>© 2024 ECHO.</span>
+            <span>© 2024 X Corp.</span>
         </div>
     );
 };

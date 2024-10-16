@@ -1,9 +1,10 @@
 "use client";
 import { useState } from 'react';
 import { Transition } from '@headlessui/react';
-import { X, Image, Smile } from 'lucide-react';
+import { X, Image as ImageIcon, Smile, Video } from 'lucide-react';
 import { FaPoll, FaVideo } from "react-icons/fa";
 import { CgSpinner } from 'react-icons/cg';
+import Image from 'next/image'
 
 interface PopupProps {
   showPopup: boolean;
@@ -18,7 +19,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // URL da imagem
   const [videoUrl, setVideoUrl] = useState<string | null>(null); // URL do vídeo
   const [fileType, setFileType] = useState<'image' | 'video' | null>(null); // Para rastrear o tipo de arquivo selecionado
-
+  const [FileSize, setFileSize] = useState("0")
   // Função para fazer upload da imagem
   const uploadImage = async (file: File) => {
     setLoading(true); // Ativa o loading antes do upload
@@ -61,10 +62,10 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
     setLoading(false); // Desativa o loading após o upload
   };
   
-  // Função para lidar com a seleção de imagem
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setFileSize((file.size / 1024).toFixed(2))
       setSelectedImage(file);
       setSelectedVideo(null); // Limpa a seleção de vídeo
       setFileType('image'); // Define o tipo de arquivo como imagem
@@ -76,6 +77,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setFileSize((file.size / 1024).toFixed(2))
       setSelectedVideo(file);
       setSelectedImage(null); // Limpa a seleção de imagem
       setFileType('video'); // Define o tipo de arquivo como vídeo
@@ -139,13 +141,37 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
               className='w-full h-full bg-black resize-none outline-none'
               placeholder="Digite aqui..."
               value={content}
+              maxLength={320}
               onChange={(e) => setContent(e.target.value)}
             />
           </div>
+          <div className='p-2 '>
+            {imageUrl && (
+              <div className='flex flex-row gap-2 bg-slate-800 rounded-md'>
+              <Image src={imageUrl || ""} width={50} height={50} alt="image_preview" className='rounded-md'/>
+              <div className='flex flex-col'>
+                <p className='text-slate-400'>{imageUrl}</p>
+                <p className='text-slate-600'>{FileSize}MB</p>
+              </div>
+            </div>
+            )}
 
+            {videoUrl && (
+              <div className='flex flex-row gap-2 bg-slate-800 rounded-md'>
+              <div className='h-[50px] w-[50px] flex items-center justify-center bg-slate-900 rounded-md'>
+                <Video />
+              </div>
+              <div className='flex flex-col'>
+                <p className='text-slate-400'>{videoUrl}</p>
+                <p className='text-slate-600'>{FileSize}MB</p>
+              </div>
+            </div>
+            )}
+            
+          </div>
           <div className='gap-4 flex flex-row border-t-[1px] ml-2 mr-2 border-[#757575] items-center text-blue-600 p-2'>
             <label className={`hover:bg-[#7daef815] rounded-full p-2 cursor-pointer ${fileType === 'video' ? 'opacity-50 cursor-not-allowed' : ''}`}>
-              <Image />
+              <ImageIcon/>
               <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={fileType === 'video'} />
             </label>
 
