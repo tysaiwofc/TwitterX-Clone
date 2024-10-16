@@ -61,7 +61,7 @@ const FeedPost = ({
     {/* Post Content */}
     <div className="w-full bg-black p-2 rounded-md flex flex-col">
       {content && (
-        <p className="break-words overflow-hidden overflow-ellipsis">
+        <p className="break-words overflow-hidden overflow-ellipsis select-text">
           {content}
         </p>
       )}

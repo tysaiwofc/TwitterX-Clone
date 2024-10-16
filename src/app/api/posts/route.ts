@@ -19,7 +19,7 @@ export async function GET(req: Request) {
         createdAt: 'desc',
       },
       include: {
-        user: true, // Supondo que você inclua dados do usuário relacionados
+        user: true,
       },
     });
 
@@ -77,20 +77,34 @@ export async function POST(req: Request) {
     }
 
     // Insere o novo post no banco de dados usando Prisma
-    const newPost = await prisma.posts.create({
-      data: {
-        type,
-        userId: Number(session.user.id), // Supondo que o ID do usuário está na sessão
-        content: content || null,
-        images: image || null,
-        video: video || null,
-        likes: 0,
-        reposts: 0,
-        replys: 0,
-        reference: reference || 0,
-        views: 0,
-      },
-    });
+    // Primeiro, cria o novo post
+const newPost = await prisma.posts.create({
+  data: {
+    type,
+    userId: Number(session.user.id), // Supondo que o ID do usuário está na sessão
+    content: content || null,
+    images: image || null,
+    video: video || null,
+    likes: 0,
+    reposts: 0,
+    replys: 0,
+    reference: reference || 0,
+    views: 0,
+  },
+});
+
+// Depois, atualiza o usuário para incrementar o número de posts
+await prisma.cl_users.update({
+  where: {
+    id: Number(session.user.id), // Identifique o usuário que você quer atualizar
+  },
+  data: {
+    posts: {
+      increment: 1, // Incrementa o campo posts
+    },
+  },
+});
+
 
     console.log('New post created:', newPost); // Log confirmando a criação do post
 

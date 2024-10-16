@@ -45,7 +45,7 @@ const ProfileLayout = ({
           Edit Profile
         </button>
       </div>
-      <ProfileAbout fname={lname} lname={lname} verified={verified} username={username} followers={followers} following={following} createdAt={createdAt} country_id={country_id} />
+      <ProfileAbout fname={fname} lname={lname} verified={verified} username={username} followers={followers} following={following} createdAt={createdAt} country_id={country_id} />
     </div>
   );
 };

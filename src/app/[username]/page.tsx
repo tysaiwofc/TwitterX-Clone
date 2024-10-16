@@ -13,7 +13,7 @@ interface UserPageProps {
 export const generateMetadata = ({ params }: UserPageProps) => {
     const { username } = params; // Obtém o parâmetro username da URL
     return {
-      title: `Profile / ${username || 'User'}`, // Define o título dinamicamente
+      title: `Profile / @${username || 'User'}`, // Define o título dinamicamente
       description: `profile`,
     };
   };

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  user-select: none;
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,6 +17,10 @@
     --background: black;
     --foreground: #ededed;
   }
+}
+
+img {
+  pointer-events: none; /* Desabilita todos os eventos de mouse nas imagens */
 }
 
 .no-scrollbar::-webkit-scrollbar {

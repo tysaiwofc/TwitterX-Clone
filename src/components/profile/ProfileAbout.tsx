@@ -17,9 +17,9 @@ const ProfileAbout = ({
     country_id,
     createdAt,
     fname,
+    lname,
     followers,
     following,
-    lname,
     username,
     verified
 }: ProfileAboutProps) => {
