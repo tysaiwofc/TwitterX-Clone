@@ -5,6 +5,7 @@ import { X, Image as ImageIcon, Smile, Video } from 'lucide-react';
 import { FaPoll, FaVideo } from "react-icons/fa";
 import { CgSpinner } from 'react-icons/cg';
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
 
 interface PopupProps {
   showPopup: boolean;
@@ -20,6 +21,10 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null); // URL do vídeo
   const [fileType, setFileType] = useState<'image' | 'video' | null>(null); // Para rastrear o tipo de arquivo selecionado
   const [FileSize, setFileSize] = useState("0")
+
+
+  const { data: session, status } = useSession();
+
   // Função para fazer upload da imagem
   const uploadImage = async (file: File) => {
     setLoading(true); // Ativa o loading antes do upload
@@ -65,7 +70,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setFileSize((file.size / 1024).toFixed(2))
+      setFileSize((file.size / 1048576).toFixed(2))
       setSelectedImage(file);
       setSelectedVideo(null); // Limpa a seleção de vídeo
       setFileType('image'); // Define o tipo de arquivo como imagem
@@ -77,7 +82,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setFileSize((file.size / 1024).toFixed(2))
+      setFileSize((file.size / 1048576).toFixed(2))
       setSelectedVideo(file);
       setSelectedImage(null); // Limpa a seleção de imagem
       setFileType('video'); // Define o tipo de arquivo como vídeo
@@ -100,7 +105,8 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
       content,
       type: postType,
       image: imageUrl, // Usa a URL da imagem armazenada
-      video: videoUrl, // Usa a URL do vídeo armazenada
+      video: videoUrl,
+      userId: session?.user?.id
     };
   
     console.log('Payload antes de enviar:', payload);

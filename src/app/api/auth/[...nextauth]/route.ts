@@ -1,11 +1,10 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   secret: process.env.SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -32,7 +31,7 @@ export const authOptions: AuthOptions = {
           const isPasswordValid = await bcrypt.compare(credentials.password, user.password || "");
           if (isPasswordValid) {
             const { password, id, ...userWithoutPassword } = user;
-            return { ...userWithoutPassword, id: id.toString() } as User;
+            return { ...userWithoutPassword, id: id.toString() } as any;
           } else {
             throw new Error('Invalid password.');
           }
@@ -71,13 +70,7 @@ export const authOptions: AuthOptions = {
       return session;
     }
   }
-};
+} as AuthOptions;
 
-// Adicione os métodos HTTP
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, authOptions);
-}
-
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, authOptions);
-}
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
