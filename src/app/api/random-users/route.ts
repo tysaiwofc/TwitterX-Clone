@@ -6,7 +6,8 @@ export async function GET(): Promise<NextResponse> {
         fname: "John",
         lname: "Doe",
         username: "johndoe",
-        avatar: "/images/default.jpg"
+        avatar: "/images/default.jpg",
+        verified: true
     }]
     return NextResponse.json(users);
   } catch (error) {

@@ -9,6 +9,7 @@ import CustomVideoPlayer from './FeedVideo';
 import FeedButton from './FeedButton';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 interface FeedPostProps {
   type?: string
   username: string
@@ -46,6 +47,7 @@ const FeedPost = ({
   const { data: session, status } = useSession();
 
   async function handleIncrementLikes(has: boolean) {
+    if(!session) return;
 
     console.log("FUNCTION HANDLER TYPE", has)
     try {
@@ -106,7 +108,8 @@ const FeedPost = ({
   <div className="flex flex-col gap-2 w-full pl-4">
     {/* User Information */}
     <div className="flex flex-row gap-2 items-center">
-      <p className="font-semibold">{complete_name}</p>
+      <Link className="font-semibold hover:underline" href={`/${username}`}>{complete_name}</Link>
+      <p ></p>
       {verified && <MdVerified className="text-blue-500" />}
       <p className="text-sm text-gray-500">@{username}</p>
     </div>

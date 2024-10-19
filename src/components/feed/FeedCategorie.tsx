@@ -12,7 +12,7 @@ const FeedCategorie = ({name, href}: FeedCategorieProps) => {
     
     
     return (
-        <Link href={href} className={`cursor-pointer flex-col hover:bg-[#302f2f91] transition-all duration-300 ease-in-out w-full flex justify-center items-center ${isActive ? 'font-semibold' : 'font-medium'}`}>
+        <Link href={href} className={`cursor-pointer hover:text-white flex-col hover:bg-[#302f2f91] transition-all duration-300 ease-in-out w-full flex justify-center items-center ${isActive ? 'font-semibold text-white' : 'font-medium'}`}>
     <span className={`${isActive ? "leading-none mt-auto" : "leading-none "}`}>{name}</span> {/* Reduz o espaçamento entre o texto e a linha */}
     {isActive ? <div className="h-1 max-w-14 w-full rounded-full bg-blue-500 mt-auto"></div> : ''} {/* mt-0 para garantir que a margem superior é zero */}
     </Link>

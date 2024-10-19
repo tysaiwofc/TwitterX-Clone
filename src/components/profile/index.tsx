@@ -64,6 +64,7 @@ const Profile = ({ username }: ProfileProps) => {
         }
 
         const data: UserData = await response.json();
+        document.title = `${data.fname} (@${data.username}) / X`
         setUserData(data);
       } catch (err: any) {
         setError(err?.message);

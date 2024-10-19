@@ -15,6 +15,7 @@ public/videos/*.mp4
 upload-server/uploads/*.mp4
 upload-server/uploads/*.png
 upload-server/uploads/*.jpg
+upload-server/uploads/*.gif
 
 /public/videos
 

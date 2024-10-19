@@ -11,7 +11,7 @@ const DEFAULT_COUNTRY_ID = 1;
 
 export async function POST(req: Request) {
   // Obter o corpo da requisição
-  const { email, password, fname, lname, username } = await req.json();
+  const { email, password, fname, username } = await req.json();
 
   // Obter o IP do usuário
   const ip = req.headers.get("x-forwarded-for") || req.headers.get("host") || "unknown";
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         OR: [
           { email: email },
           { username: username },
-          { ip_address: ip}
+
         ],
       },
     });
@@ -55,7 +55,6 @@ export async function POST(req: Request) {
         email,
         password: hashedPassword,
         fname,
-        lname,
         ip_address: ip,
         country_id: countryID,
         username,

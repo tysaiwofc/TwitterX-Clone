@@ -57,8 +57,8 @@ const RightSideBarSuggestions: React.FC = () => {
           <img src={user.avatar} alt={`${user.fname} ${user.lname}`} className="w-10 h-10 rounded-full" />
           <div className="flex-grow"> {/* Adicionando flex-grow aqui */}
           <p className="flex items-center">
-  {user.fname} {user.lname} 
-  {user.verified && <MdVerified className="ml-1" />}
+  {user.fname}
+  {user.verified && <MdVerified className="ml-1" color="#1a6aff" />}
 </p>
 
             <p className='text-[#807e7e]'>@{user.username}</p>

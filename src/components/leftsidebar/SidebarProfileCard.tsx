@@ -1,18 +1,19 @@
 import Image from "next/image";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { MdVerified } from "react-icons/md";
 
 interface SideBarProfileCardsProps {
   username: string | null | undefined;
   fname: string | null | undefined;
-  lname: string | null | undefined;
+  verified: number | null | undefined;
   avatar: string
 }
 
 const SideBarProfileCard = ({
   username,
   fname,
-  lname,
+  verified,
   avatar
 }: SideBarProfileCardsProps) => {
     return (
@@ -25,16 +26,13 @@ const SideBarProfileCard = ({
         className="rounded-full h-full"
       />
       <div className="flex flex-col ml-2">
-        <strong>
-          {fname} {lname}
+        <strong className="flex flex-row gap-2 items-center">
+          {fname} {verified ? <MdVerified color="#1a6aff"/> : ""}
         </strong>
         <p className="text-[#858383]">@{username}</p>
       </div>
       <button className="ml-auto cursor-pointer hover:bg-[#ff5555e1] rounded-full p-2" onClick={() => signOut()}>
-      <LogOut
-         // Adicione 'cursor-pointer' para indicar que é clicável
-         // Chame a função dentro de uma função anônima
-      />
+      <LogOut/>
       </button>
     </div>
   );

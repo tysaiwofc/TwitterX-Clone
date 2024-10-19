@@ -55,7 +55,7 @@ const LeftSideBar = () => {
             <SideBarIcon/>
             <Popup setShowPopup={setShowPopup} showPopup={showPopup} />
             <SideBarContent username={session.user?.username} setShowPopup={setShowPopup} showPopup={showPopup}/>
-            <SideBarProfileCard avatar={session.user?.avatar || ""} username={session.user?.username} fname={session.user?.fname} lname={session.user?.lname} />
+            <SideBarProfileCard avatar={session.user?.avatar || ""} username={session.user?.username} fname={session.user?.fname} verified={session?.user?.verified} />
         </div>
     </div>
   );
