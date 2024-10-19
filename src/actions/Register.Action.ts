@@ -1,9 +1,7 @@
 "use server"
 
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
-import { signIn } from 'next-auth/react'
 
 export const Register = createServerAction()
     .input(

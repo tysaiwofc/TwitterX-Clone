@@ -71,7 +71,9 @@ const FeedAllPostLoading = () => {
   };
 
   if (loading && page === 1) {
-    return <CgSpinner className="animate-spin text-4xl text-blue-500" />;
+    return <div className='flex items-center justify-center content-center w-full'>
+        <CgSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>;
   }
 
   if (error) {

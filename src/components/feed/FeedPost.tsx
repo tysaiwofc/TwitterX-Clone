@@ -50,7 +50,8 @@ const FeedPost = ({
 
   const DateAgo = (createdAt: Date) => {
     const now = new Date();
-    const differenceInMilliseconds = now.getTime() - createdAt.getTime();
+    if(!createdAt) return;
+    const differenceInMilliseconds = now.getTime() - new Date(createdAt)?.getTime();
     const differenceInHours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60)); // Convertendo de milissegundos para horas
     const differenceInDays = Math.floor(differenceInHours / 24); // Calcula a diferença em dias
     const differenceInMonths = Math.floor(differenceInDays / 30); // Aproximadamente 30 dias em um mês
