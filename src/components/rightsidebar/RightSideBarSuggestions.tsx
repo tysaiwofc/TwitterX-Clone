@@ -18,14 +18,21 @@ const RightSideBarSuggestions: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/random-users');
+        const storedUsers = localStorage.getItem('users');
+    
+        if(!storedUsers) {
+          const response = await fetch('/api/random-users');
         
         if (!response.ok) {
           throw new Error('Erro ao buscar usuários');
         }
 
         const data = await response.json();
+        localStorage.setItem('users', JSON.stringify(data));
         setUsers(data);
+        } else {
+          setUsers(JSON.parse(storedUsers))
+        }
       } catch (err: any) {
         setError(err.message);
       } finally {

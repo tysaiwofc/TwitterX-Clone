@@ -58,7 +58,7 @@ const FeedPost = ({
 
     if (differenceInHours < 1) {
         return "Less than an hour ago";
-    } else if (differenceInHours <= 10) {
+    } else if (differenceInHours <= 24) {
         return `${differenceInHours}h ago`;
     } else if (differenceInDays < 30) {
         return `${differenceInDays}d ago`;
