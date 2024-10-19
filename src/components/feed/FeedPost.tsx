@@ -25,6 +25,7 @@ interface FeedPostProps {
   complete_name: string
   avatar: string
   verified: boolean
+  createdAt: Date
 }
 
 const FeedPost = ({
@@ -41,10 +42,31 @@ const FeedPost = ({
   video,
   avatar,
   complete_name,
-  verified
+  verified,
+  createdAt
 }: FeedPostProps) => {
   const [localLikes, setLocalLikes] = useState(likes);
   const { data: session, status } = useSession();
+
+  const DateAgo = (createdAt: Date) => {
+    const now = new Date();
+    const differenceInMilliseconds = now.getTime() - createdAt.getTime();
+    const differenceInHours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60)); // Convertendo de milissegundos para horas
+    const differenceInDays = Math.floor(differenceInHours / 24); // Calcula a diferença em dias
+    const differenceInMonths = Math.floor(differenceInDays / 30); // Aproximadamente 30 dias em um mês
+
+    if (differenceInHours < 1) {
+        return "Less than an hour ago";
+    } else if (differenceInHours <= 10) {
+        return `${differenceInHours}h ago`;
+    } else if (differenceInDays < 30) {
+        return `${differenceInDays}d ago`;
+    } else {
+        return `${differenceInMonths}m ago`;
+    }
+};
+
+    const date = DateAgo(createdAt);
 
   async function handleIncrementLikes(has: boolean) {
     if(!session) return;
@@ -109,9 +131,16 @@ const FeedPost = ({
     {/* User Information */}
     <div className="flex flex-row gap-2 items-center">
       <Link className="font-semibold hover:underline" href={`/${username}`}>{complete_name}</Link>
-      <p ></p>
       {verified && <MdVerified className="text-blue-500" />}
       <p className="text-sm text-gray-500">@{username}</p>
+      <p className='text-gray-500'>-</p>
+      <p title={`${new Date(createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+})}`} className='hover:underline text-gray-500'>{date}</p>
     </div>
 
     {/* Post Content */}

@@ -22,6 +22,7 @@ interface Post {
   reposts: number;
   type: string;
   views: number;
+  createdAt: Date;
 }
 
 const FeedAllPostLoading = () => {
@@ -96,6 +97,7 @@ const FeedAllPostLoading = () => {
           reposts={post.reposts}
           type={post.type}
           views={post.views}
+          createdAt={post.createdAt}
         />
       ))}
 

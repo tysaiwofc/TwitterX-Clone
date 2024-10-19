@@ -32,6 +32,7 @@ interface Post {
   reposts: number;
   type: string;
   views: number;
+  createdAt: Date;
 }
 
 interface UserData {
@@ -126,25 +127,29 @@ const Profile = ({ username }: ProfileProps) => {
         key={userData?.username} 
         />
 
-        {userData?.postFeed.map((post, index) => (
-          <FeedPost
-            username={username}
-            id={post.id}
-            key={`${post.id}-${index}`}
-            complete_name={`${userData.fname} ${userData.lname}`}
-            verified={userData.verified}
-            avatar={userData.avatar}
-            content={post.content}
-            video={post.video}
-            images={post.images}
-            reference={post.reference}
-            replys={post.replys}
-            likes={post.likes}
-            reposts={post.reposts}
-            type={post.type}
-            views={post.views}
-          />
-        ))}
+{userData?.postFeed
+  ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  .map((post, index) => (
+    <FeedPost
+      username={username}
+      id={post.id}
+      key={`${post.id}-${index}`}
+      complete_name={`${userData.fname} ${userData.lname}`}
+      verified={userData.verified}
+      avatar={userData.avatar}
+      content={post.content}
+      video={post.video}
+      images={post.images}
+      reference={post.reference}
+      replys={post.replys}
+      likes={post.likes}
+      reposts={post.reposts}
+      type={post.type}
+      views={post.views}
+      createdAt={new Date(post?.createdAt)}
+    />
+  ))}
+
       </div>
     </div>
   );
