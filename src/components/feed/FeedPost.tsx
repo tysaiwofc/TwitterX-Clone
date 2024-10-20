@@ -127,14 +127,14 @@ const FeedPost = ({
     alt="User Avatar"
     className="rounded-full object-cover max-h-14 h-full max-w-14 w-full"
   />
-  <div className="flex flex-col gap-2 w-full pl-4">
+  <div className="flex flex-col gap-2 w-full pl-2">
     {/* User Information */}
     <div className="flex flex-row gap-2 items-center">
       <Link className="font-semibold hover:underline" href={`/${username}`}>{complete_name}</Link>
       {verified && <MdVerified className="text-blue-500" />}
       <p className="text-sm text-gray-500">@{username}</p>
       <p className='text-gray-500'>-</p>
-      <p data-tooltip-target="tooltip-top" data-tooltip-placement="top"  title={`${new Date(createdAt).toLocaleDateString('en-US', {
+      <p title={`${new Date(createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -145,7 +145,7 @@ const FeedPost = ({
     </div>
 
     {/* Post Content */}
-    <div className="w-full bg-black p-2 rounded-md flex flex-col">
+    <div className="w-full bg-black rounded-md flex flex-col">
       {content && (
         <p className="break-words overflow-hidden overflow-ellipsis select-text">
           {content}
@@ -159,12 +159,12 @@ const FeedPost = ({
 
       {/* Display video if present */}
       {video && (
-        <CustomVideoPlayer video={video || "/videos/output.mp4"}/>
+        <CustomVideoPlayer video={video || ""}/>
       )}
     </div>
 
     {/* Post Stats */}
-    <div className="flex flex-row text-gray-500 text-sm pt-2 items-center">
+    <div className="flex flex-row text-gray-500 text-sm  items-center">
     <div className='flex flex-row gap-7'>
       <FeedButton value={replys || 0} icon={MessageCircle}/>
       <FeedButton value={reposts || 0} icon={Repeat2}/>

@@ -73,7 +73,7 @@ const uploadVideo = async (file: File) => {
     xhr.upload.addEventListener('progress', (e) => {
       if (e.lengthComputable) {
           const percentComplete = (e.loaded / e.total) * 100;
-          setUploadProgress(percentComplete); // Atualiza o estado do progresso
+          setUploadProgress(~~(percentComplete)); // Atualiza o estado do progresso
           console.log(`Progresso do upload: ${Math.round(percentComplete)}%`);
       }
   });
@@ -227,7 +227,7 @@ const uploadVideo = async (file: File) => {
               onClick={handleSubmit}
               disabled={loading} // Desabilita se loading for true
             >
-              {loading ? <div className='flex flex-row gap-1'>{uploadProgress}<CgSpinner className="animate-spin text-4xl text-blue-900" /></div> : 'Post'}
+              {loading ? <div className='flex flex-row gap-1 items-center'>{uploadProgress}%<CgSpinner className="animate-spin text-4xl text-blue-900" /></div> : 'Post'}
             </button>
           </div>
         </div>

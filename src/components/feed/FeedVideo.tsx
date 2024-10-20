@@ -1,4 +1,4 @@
-import { ArrowDownToLine } from 'lucide-react';
+import { ArrowDownToLine, Loader2 } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import Hls from 'hls.js'; // Importa a biblioteca hls.js
@@ -65,6 +65,7 @@ const CustomVideoPlayer = ({ video }: VideoProps) => {
   };
 
   const formatTime = (seconds: number) => {
+    if(isNaN(seconds) || seconds < 1) return '00:00'
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
@@ -81,10 +82,11 @@ const CustomVideoPlayer = ({ video }: VideoProps) => {
       // Carregar a fonte do vídeo
       hls.loadSource(video);
       hls.attachMedia(videoRef.current);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        videoRef.current?.play(); // Começa a reprodução quando o manifesto é analisado
+  
+      hls.on(Hls.Events.ERROR, () => {
+        setError(true);
       });
+
 
       // Cleanup
       return () => {
@@ -97,11 +99,12 @@ const CustomVideoPlayer = ({ video }: VideoProps) => {
     }
   }, [video]);
 
+
   return (
-    <div className="mt-4">
+    <div className="mt-1 ">
       {error ? (
-        <div className="flex justify-center items-center h-64 rounded-md border border-[#5f5e5e60]">
-          <p className="text-gray-600">Failed to load the video</p>
+        <div className="flex justify-center items-center h-64 rounded-md border border-[#5f5e5e60] ">
+          <p className="text-gray-600"><Loader2 className='animate-spin'/></p>
         </div>
       ) : (
         <div className="relative w-full max-w-2xl rounded-md overflow-hidden border border-[#5f5e5e60]">
@@ -117,21 +120,21 @@ const CustomVideoPlayer = ({ video }: VideoProps) => {
           </video>
 
           {/* Controles e barra de progresso sobrepostos */}
-          <div className="absolute bottom-0 left-0 w-full bg-[#0f0f0f4d]">
+          <div className="absolute bottom-0 left-0 w-full" style={{ background: 'linear-gradient(to top, rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0))' }}>
             <div className='flex flex-row items-center'>
               <button
                 onClick={togglePlayPause}
-                className="hover:bg-[#00000069] text-white rounded-full transition p-2"
+                className="hover:bg-[#00000069] text-white rounded-full transition p-2 ml-1"
               >
                 {isPlaying ? <FaPause className='h-5 w-5' /> : <FaPlay className='h-5 w-5' />}
               </button>
-              <div className="text-sm text-gray-400 mt-1 w-full">
+              <div className="text-sm text-gray-200 mt-1 w-full">
   {formatTime(Math.floor((progress / 100) * duration))} / {formatTime(Math.floor(duration))}
 </div>
 
               <button
                 onClick={handleDownload}
-                className="hover:bg-[#34ff7875] p-2 ml-auto text-white rounded-full transition"
+                className="hover:bg-[#34ff7875] p-2 mr-2 ml-auto text-white rounded-full transition"
               >
                 <ArrowDownToLine className='h-5 w-5' />
               </button>
