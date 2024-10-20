@@ -12,10 +12,7 @@ package-lock.json
 
 *.mp4
 public/videos/*.mp4
-upload-server/uploads/*.mp4
-upload-server/uploads/*.png
-upload-server/uploads/*.jpg
-upload-server/uploads/*.gif
+upload-server/uploads/*
 
 /public/videos
 

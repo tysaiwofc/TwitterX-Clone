@@ -87,10 +87,39 @@ const Profile = ({ username }: ProfileProps) => {
 
   if (error) {
     return (
-      <div className="bg-black flex-grow items-center p-4 justify-center flex flex-col overflow-hidden border-r-[0.5px] border-r-[#333333]">
-        <Image src="/images/usernotfound.webp" width={320} height={420} alt="User Not Found" />
-        <p className="max-w-80 w-full">We could not find any user with username "{username}". Continue browsing for the best experience.</p>
-        <Link href="/" className="bg-[#1a76ff] p-2 pl-4 pr-4 rounded-full hover:bg-[#285dad]">Explore</Link>
+      <div className="bg-black flex-grow flex flex-col border-r-[0.5px] border-r-[#333333] min-h-screen"> 
+        <ProfileBarTop>
+          <Link href="/" className="flex items-center">
+            <ArrowLeft size={40} className="hover:bg-[#2e2e2e77] rounded-full p-2" />
+          </Link>
+          <div className="text-white flex flex-col">
+            <div className="text-white flex flex-row gap-2 items-center">
+              {userData ? `${userData.fname} ${userData.lname}` : "User Not Found"}
+              {userData?.verified && <MdVerified />}
+            </div>
+            <p className="text-[#3d3d3d]">{userData?.posts || 0} posts</p>
+          </div>
+        </ProfileBarTop>
+    
+        
+        {/* Controle de overflow na área de posts */}
+        <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
+          <ProfileLayout 
+          avatar={userData?.avatar  || ""} 
+          cover={userData?.cover  || ""} 
+          verified={userData?.verified || false} 
+          createdAt={userData?.createdAt || new Date()} 
+          country_id={userData?.country_id || 0} 
+          followers={userData?.followers || 0}
+          fname={userData?.fname || ""}
+          following={userData?.following || 0}
+          lname={userData?.lname  || ""}
+          username={username  || ""}
+          key={userData?.username}
+          hasUser={false}
+          />
+  
+        </div>
       </div>
     );
   }
@@ -104,7 +133,7 @@ const Profile = ({ username }: ProfileProps) => {
         <div className="text-white flex flex-col">
           <div className="text-white flex flex-row gap-2 items-center">
             {userData ? `${userData.fname} ${userData.lname}` : "User Not Found"}
-            {userData?.verified && <MdVerified />}
+            {userData?.verified && <MdVerified color='#3654ff' />}
           </div>
           <p className="text-[#3d3d3d]">{userData?.posts || 0} posts</p>
         </div>
@@ -125,6 +154,7 @@ const Profile = ({ username }: ProfileProps) => {
         lname={userData?.lname  || ""}
         username={userData?.username  || ""}
         key={userData?.username} 
+        hasUser={true}
         />
 
 {userData?.postFeed

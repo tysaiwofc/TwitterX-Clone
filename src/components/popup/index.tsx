@@ -21,6 +21,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null); // URL do vídeo
   const [fileType, setFileType] = useState<'image' | 'video' | null>(null); // Para rastrear o tipo de arquivo selecionado
   const [FileSize, setFileSize] = useState("0")
+  const [uploadProgress, setUploadProgress] = useState(0); // Adicione um estado para o progresso
 
 
   const { data: session, status } = useSession();
@@ -30,43 +31,74 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
     setLoading(true); // Ativa o loading antes do upload
     const formData = new FormData();
     formData.append('file', file);
-  
-    const response = await fetch('/api/upload', { 
-      method: 'POST',
-      body: formData,
-    });
-  
-    if (response.ok) {
-      const imageData = await response.json();
-      setImageUrl(imageData.file.url);
-      console.log('Image URL:', imageData.file.url);
-    } else {
-      console.error('Failed to upload image');
-    }
-    setLoading(false); // Desativa o loading após o upload
-  };
 
-  // Função para fazer upload do vídeo
-  const uploadVideo = async (file: File) => {
+    const xhr = new XMLHttpRequest(); // Usando XMLHttpRequest para monitorar o progresso
+
+    xhr.upload.addEventListener('progress', (e) => {
+      if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setUploadProgress(percentComplete); // Atualiza o estado do progresso
+          console.log(`Progresso do upload: ${Math.round(percentComplete)}%`);
+      }
+  });
+
+    xhr.onload = async () => {
+        if (xhr.status === 200) {
+            const imageData = await JSON.parse(xhr.responseText);
+            setImageUrl(imageData.file.url);
+            console.log('Image URL:', imageData.file.url);
+        } else {
+            console.error('Failed to upload image');
+        }
+        setLoading(false); // Desativa o loading após o upload
+    };
+
+    xhr.onerror = () => {
+        console.error('Erro durante o upload da imagem');
+        setLoading(false); // Desativa o loading após erro
+    };
+
+    xhr.open('POST', '/api/upload', true);
+    xhr.send(formData);
+};
+
+// Função para fazer upload do vídeo
+const uploadVideo = async (file: File) => {
     setLoading(true); // Ativa o loading antes do upload
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch('/api/upload', { // Atualize para a sua rota de upload de vídeo
-      method: 'POST',
-      body: formData,
-    });
+    const xhr = new XMLHttpRequest(); // Usando XMLHttpRequest para monitorar o progresso
 
-    if (response.ok) {
-      const videoData = await response.json();
-      setVideoUrl(videoData.file.url);
-      console.log('Video URL:', videoData.file.url);
-    } else {
-      console.error('Failed to upload video');
-    }
-    setLoading(false); // Desativa o loading após o upload
-  };
+    xhr.upload.addEventListener('progress', (e) => {
+      if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setUploadProgress(percentComplete); // Atualiza o estado do progresso
+          console.log(`Progresso do upload: ${Math.round(percentComplete)}%`);
+      }
+  });
+
+    xhr.onload = async () => {
+        if (xhr.status === 200) {
+            const videoData = await JSON.parse(xhr.responseText);
+            setVideoUrl(videoData.file.url);
+            console.log('Video URL:', videoData.file.url);
+        } else {
+            console.error('Failed to upload video');
+        }
+        setLoading(false); // Desativa o loading após o upload
+    };
+
+    xhr.onerror = () => {
+        console.error('Erro durante o upload do vídeo');
+        setLoading(false); // Desativa o loading após erro
+    };
+
+    xhr.open('POST', '/api/upload', true);
+    xhr.send(formData);
+};
   
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -195,7 +227,7 @@ const Popup = ({ showPopup, setShowPopup }: PopupProps) => {
               onClick={handleSubmit}
               disabled={loading} // Desabilita se loading for true
             >
-              {loading ? <CgSpinner className="animate-spin text-4xl text-blue-500" /> : 'Post'}
+              {loading ? <div className='flex flex-row gap-1'>{uploadProgress}<CgSpinner className="animate-spin text-4xl text-blue-900" /></div> : 'Post'}
             </button>
           </div>
         </div>
