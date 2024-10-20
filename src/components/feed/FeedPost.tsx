@@ -1,4 +1,3 @@
-
 import Image from 'next/image'
 import { MdVerified } from 'react-icons/md'
 import { FaRegHeart } from "react-icons/fa";
@@ -135,13 +134,14 @@ const FeedPost = ({
       {verified && <MdVerified className="text-blue-500" />}
       <p className="text-sm text-gray-500">@{username}</p>
       <p className='text-gray-500'>-</p>
-      <p title={`${new Date(createdAt).toLocaleDateString('en-US', {
+      <p data-tooltip-target="tooltip-top" data-tooltip-placement="top"  title={`${new Date(createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-})}`} className='hover:underline text-gray-500'>{date}</p>
+})}`} className='hover:underline text-gray-500' >{date}</p>
+
     </div>
 
     {/* Post Content */}
@@ -178,9 +178,8 @@ const FeedPost = ({
     <FeedButton value={views || 0} icon={Upload}/>
  </div>
   </div>
-</div>
-
+  </div>
   )
 }
 
-export default FeedPost
+export default FeedPost;

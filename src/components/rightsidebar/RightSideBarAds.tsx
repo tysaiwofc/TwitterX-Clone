@@ -17,10 +17,9 @@ const RightSideBarAds = ({sponsor, button, cover, icon: Icon}: RightSideBarAdsPr
         {/* Usando a classe 'object-cover' para garantir que a imagem preencha a div */}
         <Image
           src={cover}
-          layout="fill" // Isso faz a imagem preencher toda a div pai
-          objectFit="cover" // Faz com que a imagem mantenha suas proporções
+          fill={true} // Isso faz a imagem preencher toda a div pai
           alt="ads"
-          className="rounded-2xl border-white border-[1px]"
+          className="rounded-2xl border-white border-[1px] object-cover"
         />
         {/* Botão posicionado no canto inferior direito */}
         <button className="flex gap-2 items-center absolute bottom-2 right-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full">
