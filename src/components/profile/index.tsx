@@ -132,7 +132,7 @@ const Profile = ({ username }: ProfileProps) => {
         </Link>
         <div className="text-white flex flex-col">
           <div className="text-white flex flex-row gap-2 items-center">
-            {userData ? `${userData.fname} ${userData.lname}` : "User Not Found"}
+            {userData ? `${userData.fname}` : "User Not Found"}
             {userData?.verified && <MdVerified color='#3654ff' />}
           </div>
           <p className="text-[#3d3d3d]">{userData?.posts || 0} posts</p>

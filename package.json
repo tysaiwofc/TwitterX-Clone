@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "default:db": "node default_db.js"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

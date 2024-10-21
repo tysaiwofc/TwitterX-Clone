@@ -38,7 +38,7 @@ const ProfileAbout = ({
     return (
         <div className="w-full p-4">
             <div className='flex flex-row gap-2 items-center '>
-                <p>{fname} {lname}</p>
+                <p>{fname}</p>
                 {verified && <MdVerified color='#3654ff' />}
             </div>
             <p className='text-[#4b4a4a]'>@{username}</p>
